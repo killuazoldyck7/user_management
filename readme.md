@@ -42,6 +42,11 @@ Implemented unit tests to verify:
 
 ---
 
+### **Docker Repository URL** ✅  
+https://hub.docker.com/r/varunrahul/user_management
+
+---
+
 ### 2. **Quality Assurance (QA): Identified and Fixed 5 Issues** 🐞  
 | **Issue**                       | **Status** | **Details**                                                                                     |
 |---------------------------------|------------|-------------------------------------------------------------------------------------------------|
@@ -59,6 +64,7 @@ Implemented unit tests to verify:
 - [#3](#) Dependency conflicts in Python setup  
 
 ---
+https://hub.docker.com/r/varunrahul/user_management
 
 ### 3. **Test Coverage Improvement** ✅  
 Added **10 new tests** to enhance test coverage:

@@ -202,3 +202,48 @@ class UserService:
             await session.commit()
             return True
         return False
+
+@classmethod
+async def upload_user_profile_image(
+    cls, session: AsyncSession, user_id: UUID, profile_image_data: Dict[str, str]
+) -> Optional[User]:
+    """
+    Upload and update the user's profile picture.
+
+    Args:
+        session (AsyncSession): The database session.
+        user_id (UUID): The unique ID of the user.
+        profile_image_data (Dict[str, str]): The profile image data to update.
+
+    Returns:
+        Optional[User]: Updated user object or None if the update fails.
+    """
+    try:
+        # Validate input and extract the fields to update
+        update_data = UserUpdate(**profile_image_data).model_dump(exclude_unset=True)
+        logger.info(f"Validated profile image data for user {user_id}: {update_data}")
+
+        # Build and execute the update query
+        update_query = (
+            update(User)
+            .where(User.id == user_id)
+            .values(**update_data)
+            .execution_options(synchronize_session="fetch")
+        )
+        await cls._execute_query(session, update_query)
+
+        # Retrieve the updated user
+        updated_user = await cls.get_by_id(session, user_id)
+        if updated_user:
+            await session.refresh(updated_user)  # Ensure the session reflects the updated state
+            logger.info(f"Successfully updated profile image for user {user_id}.")
+            return updated_user
+
+        logger.warning(f"User {user_id} not found after attempting profile update.")
+        return None
+    except ValueError as ve:
+        logger.error(f"Validation error while updating user {user_id}: {ve}")
+        return None
+    except Exception as exc:
+        logger.exception(f"Unexpected error while updating user {user_id}: {exc}")
+        return None

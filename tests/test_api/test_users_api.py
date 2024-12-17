@@ -7,6 +7,60 @@ from app.utils.nickname_gen import generate_nickname
 from app.utils.security import hash_password
 from app.services.jwt_service import decode_token  # Import your FastAPI app
 
+@pytest.mark.asyncio
+async def test_list_users_with_negative_skip(async_client, admin_token):
+    response = await async_client.get(
+        "/users/",
+        params={"skip": -10, "limit": 10},
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data['page'] == 1  
+    assert len(data['items']) <= 10 
+
+@pytest.mark.asyncio
+async def test_list_users_with_zero_limit(async_client, admin_token):
+    response = await async_client.get(
+        "/users/",
+        params={"skip": 0, "limit": 0},
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data['items']) == 1  
+
+@pytest.mark.asyncio
+async def test_list_users_with_large_limit(async_client, admin_token):
+    response = await async_client.get(
+        "/users/",
+        params={"skip": 0, "limit": 1000},  
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data['items']) <= 100 
+
+@pytest.mark.asyncio
+async def test_list_users_with_valid_pagination(async_client, admin_token):
+    response = await async_client.get(
+        "/users/",
+        params={"skip": 10, "limit": 5},
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data['page'] == 3  
+    assert len(data['items']) <= 5  
+
+@pytest.mark.asyncio
+async def test_list_users_unauthorized(async_client, user_token):
+    response = await async_client.get(
+        "/users/",
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
+    assert response.status_code == 403 
+
 # Example of a test function using the async_client fixture
 @pytest.mark.asyncio
 async def test_create_user_access_denied(async_client, user_token, email_service):

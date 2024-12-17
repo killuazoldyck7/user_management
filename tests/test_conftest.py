@@ -71,3 +71,18 @@ async def test_current_user_error(db_session, verified_user):
     assert stored_user is not None
     assert stored_user.email == verified_user.email
     assert verify_password("MySuperPassword$1234", stored_user.hashed_password)
+
+@pytest.fixture
+async def test_user(db_session):
+    """Fixture to create and return a test user."""
+    user = User(
+        id=str(uuid.uuid4()),
+        email="test_user@example.com",
+        nickname="test_user",
+        hashed_password=hash_password("MySuperPassword$1234"),
+        role="AUTHENTICATED"
+    )
+    db_session.add(user)
+    await db_session.commit()
+    await db_session.refresh(user)
+    return user

@@ -15,9 +15,10 @@ Fixtures:
 
 # Standard library imports
 from builtins import Exception, range, str
-from datetime import timedelta
+from datetime import datetime, timedelta
 from unittest.mock import AsyncMock, patch
 from uuid import uuid4
+import uuid
 
 # Third-party imports
 import pytest
@@ -194,6 +195,25 @@ async def admin_user(db_session: AsyncSession):
     db_session.add(user)
     await db_session.commit()
     return user
+
+
+@pytest.fixture
+async def test_user(db_session):
+    user = User(
+        id=uuid.uuid4(),
+        nickname="test_user",
+        email="testuser@example.com",
+        role=UserRole.AUTHENTICATED,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow(),
+    )
+    hashed_password = hash_password("password123")
+    user.hashed_password = hashed_password 
+    db_session.add(user)
+    await db_session.commit()
+    await db_session.refresh(user)
+    return user
+
 
 @pytest.fixture
 async def manager_user(db_session: AsyncSession):

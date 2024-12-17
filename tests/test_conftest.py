@@ -62,3 +62,12 @@ async def test_update_professional_status(db_session, verified_user):
     updated_user = result.scalars().first()
     assert updated_user.is_professional
     assert updated_user.professional_status_updated_at is not None
+
+@pytest.mark.asyncio
+async def test_current_user_error(db_session, verified_user):
+    """Test that a user is correctly created and stored in the database."""
+    result = await db_session.execute(select(User).filter_by(email=verified_user.email))
+    stored_user = result.scalars().first()
+    assert stored_user is not None
+    assert stored_user.email == verified_user.email
+    assert verify_password("MySuperPassword$1234", stored_user.hashed_password)

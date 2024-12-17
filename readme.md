@@ -1,53 +1,135 @@
+# User Management System: Final Project 🚀
 
+## Overview
+Welcome to the **User Management System** project, an open-source development initiative guided by Professor Keith Williams at NJIT! This project offers hands-on experience in real-world software development, focusing on user management functionalities with robust testing, QA processes, and new feature implementations.
 
-# The User Management System Final Project: Your Epic Coding Adventure Awaits! 🎉✨🔥
+---
 
-## Introduction: Buckle Up for the Ride of a Lifetime 🚀🎬
+## Goals and Objectives 🎯
+1. **Practical Experience**: Collaborate on a production-grade codebase.
+2. **Quality Assurance**: Identify and resolve bugs for a robust application.
+3. **Test Coverage**: Write 10 new tests to address gaps in existing functionality.
+4. **Feature Implementation**: Develop a new feature adhering to best practices.
+5. **Industry Readiness**: Mimic real-world development processes and workflows.
 
-Welcome to the User Management System project - an epic open-source adventure crafted by the legendary Professor Keith Williams for his rockstar students at NJIT! 🏫👨‍🏫⭐ This project is your gateway to coding glory, providing a bulletproof foundation for a user management system that will blow your mind! 🤯 You'll bridge the gap between the realms of seasoned software pros and aspiring student developers like yourselves. 
+---
 
-### [Instructor Video - Project Overview and Tips](https://youtu.be/gairLNAp6mA) 🎥
+## Completed Work ✅
 
-- [Introduction to the system features and overview of the project - please read](system_documentation.md) 📚
-- [Project Setup Instructions](setup.md) ⚒️
-- [Features to Select From](features.md) 🛠️
-- [About the Project](about.md)🔥🌟
+### 1. **Feature: Profile Picture Upload with Minio** 🌄  
+Enhances user profile management by allowing users to upload and update their profile pictures securely using Minio.
 
-## Goals and Objectives: Unlock Your Coding Superpowers 🎯🏆🌟
+**User Story**:  
+_As a user, I want to upload and update my profile picture to personalize my account._
 
-Get ready to ascend to new heights with this legendary project:
+**Implementation**:  
+- Created an API endpoint `/upload/{user_id}` to handle file uploads.
+- Integrated Minio for object storage to store profile pictures securely.
+- Added validation to restrict file types (`.png`, `.jpg`, `.jpeg`) and enforce a maximum file size.
+- Resized uploaded images for consistency and optimization.
+- Updated user model and response schema to include the profile picture URL.
 
-1. **Practical Experience**: Dive headfirst into a real-world codebase, collaborate with your teammates, and contribute to an open-source project like a seasoned pro! 💻👩‍💻🔥
-2. **Quality Assurance**: Develop ninja-level skills in identifying and resolving bugs, ensuring your code quality and reliability are out of this world. 🐞🔍⚡
-3. **Test Coverage**: Write additional tests to cover edge cases, error scenarios, and important functionalities - leave no stone unturned and no bug left behind! ✅🧪🕵️‍♂️
-4. **Feature Implementation**: Implement a brand new, mind-blowing feature and make your epic mark on the project, following best practices for coding, testing, and documentation like a true artisan. ✨🚀🎆
-5. **Collaboration**: Foster teamwork and collaboration through code reviews, issue tracking, and adhering to contribution guidelines - teamwork makes the dream work, and together you'll conquer worlds! 🤝💪🌍
-6. **Industry Readiness**: Prepare for the software industry by working on a project that simulates real-world development scenarios - level up your skills to super hero status  and become an unstoppable coding force! 🔝🚀🏆⚡
+**Optional Enhancements**:
+- Default profile picture for users without an upload.
+- Resizing images to a standard format.
 
-## Submission and Grading: Your Chance to Shine 📝✏️📈
+**Unit Tests**:  
+Implemented unit tests to verify:
+- Successful file uploads.
+- File type validation.
+- File size enforcement.
+- Profile picture URL updates in the user model.
 
-1. **Reflection Document**: Submit a 1-2 page Word document reflecting on your learnings throughout the course and your experience working on this epic project. Include links to the closed issues for the **5 QA issues, 10 NEW tests, and 1 Feature** you'll be graded on. Make sure your project successfully deploys to DockerHub and include a link to your Docker repository in the document - let your work speak for itself! 📄🔗💥
+---
 
-2. **Commit History**: Show off your consistent hard work through your commit history like a true coding warrior. **Projects with less than 10 commits will get an automatic 0 - ouch!** 😬⚠️ A significant part of your project's evaluation will be based on your use of issues, commits, and following a professional development process like a boss - prove your coding prowess! 💻🔄🔥
+### 2. **Quality Assurance (QA): Identified and Fixed 5 Issues** 🐞  
+| **Issue**                       | **Status** | **Details**                                                                                     |
+|---------------------------------|------------|-------------------------------------------------------------------------------------------------|
+| Duplicate email and nickname error during bulk user creation | ✅ Fixed   | Implemented validation checks for duplicate emails and nicknames during user creation.          |
+| Role downgrade during email verification for non-anonymous users | ✅ Fixed   | Ensured proper role checks to avoid role downgrades after email verification.                   |
+| `list_users` Pagination Validation | ✅ Fixed   | Added input validation for pagination parameters (skip, limit) to prevent invalid behavior.     |
+| Missing user-id in email verification | ✅ Fixed   | Resolved issue causing missing user ID during email verification processes.                    |
+| Dependency conflicts in Python setup | ✅ Fixed   | Fixed Python dependency conflicts to ensure smooth setup and deployment.                       |
 
-3. **Deployability**: Broken projects that don't deploy to Dockerhub or pass all the automated tests on GitHub actions will face point deductions - nobody likes a buggy app! 🐞☠️ Show the world your flawless coding skills!
+**Closed Issues**:  
+- [#14](#) Duplicate email and nickname error during bulk user creation  
+- [#10](#) Role downgrade during email verification  
+- [#8](#) Pagination validation in list_users  
+- [#6](#) Missing user ID in email verification  
+- [#3](#) Dependency conflicts in Python setup  
 
-## Managing the Project Workload: Stay Focused, Stay Victorious ⏱️🧠⚡
+---
 
-This project requires effective time management and a well-planned strategy, but fear not - you've got this! Follow these steps to ensure a successful (and sane!) project outcome:
+### 3. **Test Coverage Improvement** ✅  
+Added **10 new tests** to enhance test coverage:
+- Edge case tests for user registration, login, and database updates.
+- Tests for the new profile picture upload functionality.
+- Validation for invalid file formats and oversized files.
 
-1. **Select a Feature**: [Choose a feature](features.md) from the provided list of additional improvements that sparks your interest and aligns with your goals like a laser beam. ✨⭐🎯 This is your chance to shine!
+---
 
-2. **Quality Assurance (QA)**: Thoroughly test the system's major functionalities related to your chosen feature and identify at least 5 issues or bugs like a true detective. Create GitHub issues for each identified problem, providing detailed descriptions and steps to reproduce - the more detail, the merrier! 🔍🐞🕵️‍♀️ Leave no stone unturned!
+## Setup Instructions ⚙️
 
-3. **Test Coverage Improvement**: Review the existing test suite and identify gaps in test coverage like a pro. Create 10 additional tests to cover edge cases, error scenarios, and important functionalities related to your chosen feature. Focus on areas such as user registration, login, authorization, and database interactions. Simulate the setup of the system as the admin user, then creating users, and updating user accounts - leave no stone unturned, no bug left behind! ✅🧪🔍🔬 Become the master of testing!
+### Prerequisites  
+- Docker & Docker Compose  
+- Python 3.12+  
+- Minio Server for Object Storage  
 
-4. **New Feature Implementation**: Implement your chosen feature, following the project's coding practices and architecture like a coding ninja. Write appropriate tests to ensure your new feature is functional and reliable like a rock. Document the new feature, including its usage, configuration, and any necessary migrations - future you will thank you profusely! 🚀✨📝👩‍💻⚡ Make your mark on this project!
+### Steps to Run  
+1. Clone the repository:  
+   ```bash
+   git clone git@github.com:killuazoldyck7/user_management.git
+   cd user-management
+   ```
 
-5. **Maintain a Working Main Branch**: Throughout the project, ensure you always have a working main branch deploying to Docker like a well-oiled machine. This will prevent any last-minute headaches and ensure a smooth submission process - no tears allowed, only triumphs! 😊🚢⚓ Stay focused, stay victorious!
+2. Start all services using Docker Compose:  
+   ```bash
+   docker-compose up --build -d
+   ```
 
-Remember, it's more important to make something work reliably and be reasonably complete than to implement an overly complex feature. Focus on creating a feature that you can build upon or demonstrate in an interview setting - show off your skills like a rockstar! 💪🚀🎓
+3. Access the application:  
+   - **FastAPI**: http://localhost:8000  
+   - **Minio**: http://localhost:9000  
+   - **PgAdmin**: http://localhost:5050  
 
-Don't forget to always have a working main branch deploying to Docker at all times. If you always have a working main branch, you will never be in jeopardy of receiving a very disappointing grade :-). Keep that main branch shining bright!
+4. Run the test suite:  
+   ```bash
+   docker-compose exec fastapi pytest
+   ```
 
-Let's embark on this epic coding adventure together and conquer the world of software engineering! You've got this, coding rockstars! 🚀🌟✨
+---
+
+## Deployment Status 🚢
+The project successfully deploys to DockerHub.  
+[DockerHub Repository Link]([https://hub.docker.com/repository/your-link](https://hub.docker.com/r/varunrahul/user_management))
+
+---
+
+## Reflection Document 📄  
+- 5 QA issues fixed.  
+- 10 additional test cases added.  
+- Implemented the **Profile Picture Upload with Minio** feature.  
+
+---
+
+## Commit History 📈  
+A consistent commit history has been maintained with clear and descriptive messages:  
+- Minimum of **10 commits** achieved.  
+
+---
+
+## Contributors 🤝  
+- **killuazoldyck7**  
+
+Special thanks to Professor Keith Williams for guidance and support.
+
+---
+
+## Screenshots 📸
+![Closed Issues](./screenshots/closed_issues.png)
+
+---
+
+## Conclusion 🎓  
+This project demonstrates real-world application development, focusing on high-quality code, robust testing, and collaborative workflows. The new profile picture upload feature enhances user experience, while rigorous testing ensures reliability across the system.  
+

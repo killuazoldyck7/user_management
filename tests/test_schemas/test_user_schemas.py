@@ -23,6 +23,10 @@ def user_base_data():
 def user_create_data(user_base_data):
     return {**user_base_data, "password": "SecurePassword123!"}
 
+def test_user_update_partial(user_update_data):
+    user_update = UserUpdate(email="updated_email@example.com")
+    assert user_update.email == "updated_email@example.com"
+
 @pytest.fixture
 def user_update_data():
     return {
@@ -64,6 +68,22 @@ def test_user_create_valid(user_create_data):
     user = UserCreate(**user_create_data)
     assert user.nickname == user_create_data["nickname"]
     assert user.password == user_create_data["password"]
+
+def test_user_create_invalid_email(user_create_data):
+    user_create_data["email"] = "invalid-email"
+    with pytest.raises(ValidationError):
+        UserCreate(**user_create_data)
+
+def test_user_list_response(user_response_data):
+    user_list = UserListResponse(
+        items=[user_response_data],
+        total=1,
+        page=1,
+        size=1
+    )
+    assert user_list.total == 1
+    assert len(user_list.items) == 1
+
 
 # Tests for UserUpdate
 def test_user_update_valid(user_update_data):

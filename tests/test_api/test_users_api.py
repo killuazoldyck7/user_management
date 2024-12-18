@@ -231,6 +231,23 @@ async def test_update_user_github(async_client, test_user, admin_token, db_sessi
     print("Post-Update User Data:", post_update.json())
 
 @pytest.mark.asyncio
+async def test_get_user_valid(async_client, admin_user, admin_token):
+    response = await async_client.get(
+        f"/users/{admin_user.id}",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 200
+    assert response.json()["id"] == str(admin_user.id)
+
+@pytest.mark.asyncio
+async def test_list_users_unauthorized(async_client, user_token):
+    response = await async_client.get(
+        "/users/",
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
+    assert response.status_code == 403
+
+@pytest.mark.asyncio
 async def test_update_user_linkedin(async_client, admin_user, admin_token):
     unique_email = f"{datetime.now().timestamp()}_{admin_user.email}"
     updated_data = {"email": unique_email, "linkedin_profile_url": "http://www.linkedin.com/kaw393939", "nickname": "UpdatedNickname"}
@@ -263,3 +280,12 @@ async def test_list_users_unauthorized(async_client, user_token):
         headers={"Authorization": f"Bearer {user_token}"}
     )
     assert response.status_code == 403  # Forbidden, as expected for regular user
+
+@pytest.mark.asyncio
+async def test_delete_nonexistent_user(async_client, admin_token):
+    non_existent_user_id = "00000000-0000-0000-0000-000000000000"
+    response = await async_client.delete(
+        f"/users/{non_existent_user_id}",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    assert response.status_code == 404

@@ -61,6 +61,20 @@ async def test_get_by_email_user_does_not_exist(db_session):
     retrieved_user = await UserService.get_by_email(db_session, "non_existent_email@example.com")
     assert retrieved_user is None
 
+@pytest.mark.asyncio
+async def test_create_user_success(db_session, email_service):
+    user_data = {
+        "nickname": generate_nickname(),
+        "email": "test_create@example.com",
+        "password": "TestPassword123!",
+        "role": UserRole.AUTHENTICATED.name
+    }
+    user = await UserService.create(db_session, user_data, email_service)
+    assert user is not None
+    assert user.email == user_data["email"]
+    assert user.nickname is not None  # Check that a nickname was assigned
+    assert isinstance(user.nickname, str)  # Check that the nickname is a string
+
 # Test updating a user with valid data
 async def test_update_user_valid_data(db_session, user):
     new_email = "updated_email@example.com"
@@ -91,6 +105,12 @@ async def test_list_users_with_pagination(db_session, users_with_same_role_50_us
     assert len(users_page_1) == 10
     assert len(users_page_2) == 10
     assert users_page_1[0].id != users_page_2[0].id
+
+@pytest.mark.asyncio
+async def test_get_user_by_email(db_session, verified_user):
+    user = await UserService.get_by_email(db_session, verified_user.email)
+    assert user is not None
+    assert user.email == verified_user.email
 
 # Test registering a user with valid data
 async def test_register_user_with_valid_data(db_session, email_service):
@@ -161,3 +181,15 @@ async def test_unlock_user_account(db_session, locked_user):
     assert unlocked, "The account should be unlocked"
     refreshed_user = await UserService.get_by_id(db_session, locked_user.id)
     assert not refreshed_user.is_locked, "The user should no longer be locked"
+
+@pytest.mark.asyncio
+async def test_user_count(db_session, users_with_same_role_50_users):
+    count = await UserService.count(db_session)
+    assert count == len(users_with_same_role_50_users)
+
+@pytest.mark.asyncio
+async def test_unlock_user_account(db_session, locked_user):
+    success = await UserService.unlock_user_account(db_session, locked_user.id)
+    assert success is True
+    refreshed_user = await UserService.get_by_id(db_session, locked_user.id)
+    assert refreshed_user.is_locked is False

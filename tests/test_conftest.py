@@ -1,12 +1,13 @@
 # test_users.py
 
 from builtins import len
+import uuid
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.future import select
 
 from app.models.user_model import User, UserRole
-from app.utils.security import verify_password
+from app.utils.security import hash_password, verify_password
 
 @pytest.mark.asyncio
 async def test_user_creation(db_session, verified_user):

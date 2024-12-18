@@ -127,13 +127,6 @@ A consistent commit history has been maintained with clear and descriptive messa
 ## Contributors 🤝  
 - **killuazoldyck7**  
 
-Special thanks to Professor Keith Williams for guidance and support.
-
----
-
-## Screenshots 📸
-![Closed Issues](./screenshots/closed_issues.png)
-
 ---
 
 ## Conclusion 🎓  
